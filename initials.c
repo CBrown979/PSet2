@@ -7,14 +7,20 @@
 
 int main(void)
 {
-    string userName = get_string("What's Your Name?: "); //declares data type string for variable named userName -- user name is the string entered by the user
+    string userName = get_string("What's Your Name: "); //declares data type string for variable named userName -- user name is the string entered by the user
 
     for (int initial = 0, sLength = strlen(userName); initial < sLength; initial++) //to loop over each element of the string - using variable called initial as the counter
     //initialize counter to 0, and obtain the length of userName to store value in sLength; 0 less than length of userName; increase counter by 1
     {
         if(initial == 0 && isalpha(userName[initial])) //checking the first position to make sure it's a letter
             {
-                printf("%c", toupper(userName[initial])); //prints the first letter as uppercase
+                printf("%c", toupper(userName[initial])); //only prints the first (0th) letter as uppercase
+            }
+
+        //if there is a blank in the string[index], and the next string[index] is a letter
+        else if(userName[initial] == ' ' && isalpha(userName[initial + 1]))
+            {
+                printf("%c", toupper(userName[initial + 1])); //print remaining first letters, after a blank, as an uppercase character
             }
 
     }
@@ -25,7 +31,16 @@ int main(void)
 
 }
 
+//ToDos:
+//Prompt user for name
+    //get string
+    //only accept letters and spaces; single space between letters entered
+//Print
+    //uppercase only - toupper
+
+
 // Specification
+
 // Design and implement a program, initials, that, given a person’s name, prints a person’s initials.
 
 // Implement your program in a file called initials.c in a directory called initials.
