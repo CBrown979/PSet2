@@ -9,66 +9,76 @@ int main(int argc, string argv[]) //argc stands for "argument count"; argc conta
 
 {
     //Declare variables for shift and text
-    int shiftKey; //number used to shift letters to the right in ciphertext
+    string shiftKey; //string used to shift letters to the right in ciphertext
     string plainText; //string entered by the user
 
-    //argc must equal 2 -- to run program, there can only be 2 arguments entered on command line - ./casear and shiftKey
-    //argv is the 2nd argument, but is a number -- the number will be entered as a string, but needs to be converted to an integer (atoi)
+    //argc must equal 2 -- to run program, there can only be 2 arguments entered on command line - ./vigenere and shiftKey
+    //argv is the 2nd argument and will be alphabet characters only -- and entered as a string
     if(argc == 2)
     {
-        shiftKey = atoi(argv[1]); //argv[1] is targeting the value of the 2nd argument on the command line, after ./caesar
-        // printf("%i + %i = %i\n",shiftKey,shiftKey,shiftKey+shiftKey); //confirmed the number entered is acting like an integer
+        shiftKey = argv[1]; //argv[1] is targeting the value of the 2nd argument on the command line, after ./vigenere
+        // printf("%s\n",shiftKey); //confirmed key is acting like an string
+
+        //confirm that shiftKey string contains all alphabet characters only
+        for(int i = 0, allAlphas = strlen(shiftKey); i < allAlphas; i++) //for all the characters in shiftKey string
+        {
+            if(!isalpha(shiftKey[i]))//if a character in the shiftKey string is NOT an alphabet character
+            {
+                printf("Error! ONLY Alphabet Characters Accepted - Try Again\n");//print error message
+                return 1; //means error or anomaly
+            }
+        }
     }
-    else
+    if(argc != 2)//if argc does not equal 2; if there are not ONLY 2 arguments on the command line
     {
-        printf("Error! Please enter a number after ./caesar\n"); //print statement if nothing is entered after ./caesar
-        return 1; //means error or anomaly
+            printf("Error! There must be ONE WORD after ./vigenere\n"); //print error message
+            return 1; //means error or anomaly
     }
 
     //Input from user - 1st line: plaintext: User input
     plainText = get_string("plaintext: ");
     // printf("%s\n", plainText);
 
-    // //Ciphered text - 2nd line: ciphertext: cipheredText
-    printf("ciphertext: "); //previously had \n which was pushing cipheredText to next line in error - just deleted lol
+    // // //Ciphered text - 2nd line: ciphertext: cipheredText
+    printf("ciphertext: \n");
 
-    //For each letter of plaintext - the entire length of plaintext, add the shiftKey
-    //ciphertext = (ith character in plaintext + shiftKey) mod 26
-    for(int i = 0, textLength = strlen(plainText); i < textLength; i++)
-    {
-        //is the indexed space an alphabet character?; if so, is it upper or lowercase? Must preserve cases
+    // //For each element of plaintext - the entire length of plaintext, confirm if each element is an alphabet character; if so, add the shiftKey
+    // //ciphertext = (ith character in plaintext + shiftKey) mod 26
+    // for(int i = 0, textLength = strlen(plainText); i < textLength; i++)
+    // {
+    //     //is the indexed space an alphabet character?; if so, is it upper or lowercase? Must preserve cases
 
-        if(isalpha(plainText[i]) && isupper(plainText[i])) { //confirming if each character is an alphabet character && is uppercase
-            // printf("%c\n", plainText[i]); //then printing each alphabet character letter of plainText
-            //from ASCII to AlphaIndex conversion values: plainText + shiftKey - 65 (A = 65, to bring to 0 based index, subtract 65)
-            int upperConvertToIndex = plainText[i] + shiftKey - 65;
+    //     if(isalpha(plainText[i]) && isupper(plainText[i])) { //confirming if each character is an alphabet character && is uppercase
+    //         // printf("%c\n", plainText[i]); //then printing each alphabet character letter of plainText
+    //         //from ASCII to AlphaIndex conversion values: plainText + shiftKey - 65 (A = 65, to bring to 0 based index, subtract 65)
+    //         int upperConvertToIndex = plainText[i] + shiftKey - 65;
 
-            //convert AlphaIndex to CipheredText -- (Ith index letter % 26 + 65(then add the ASCII back at the end)
-            int newCipheredUpperText = upperConvertToIndex % 26 + 65; //modulo + 65 to generate the newly shifted ascii values
-            printf("%c", newCipheredUpperText); //print the new ASCII letter (+65)
-        }
-        // if(isupper(plainText[i])){ //checking if Ith character in plainText is uppercase
-        //     printf("%c\n", plainText[i]);
-        // }
-        else if(isalpha(plainText[i]) && islower(plainText[i])){
-            //from ASCII to AlphaIndex conversion values: plainText + shiftKey - 97 (a = 97, to bring to 0 based index, subtract 97)
-            int lowerConvertToIndex = plainText[i] + shiftKey - 97;
+    //         //convert AlphaIndex to CipheredText -- (Ith index letter % 26 + 65(then add the ASCII back at the end)
+    //         int newCipheredUpperText = upperConvertToIndex % 26 + 65; //modulo + 65 to generate the newly shifted ascii values
+    //         printf("%c", newCipheredUpperText); //print the new ASCII letter (+65)
+    //     }
+    //     // if(isupper(plainText[i])){ //checking if Ith character in plainText is uppercase
+    //     //     printf("%c\n", plainText[i]);
+    //     // }
+    //     else if(isalpha(plainText[i]) && islower(plainText[i])){
+    //         //from ASCII to AlphaIndex conversion values: plainText + shiftKey - 97 (a = 97, to bring to 0 based index, subtract 97)
+    //         int lowerConvertToIndex = plainText[i] + shiftKey - 97;
 
-            //convert AlphaIndex to CipheredText -- Ith index letter % 26 + 97(then add the ASCII back at the end)
-            int newCipheredLowerText = lowerConvertToIndex % 26 + 97; //modulo + 97 to generate the newly shifted ascii values
-            printf("%c", newCipheredLowerText); //prints newly shifted ascii values
-        }
-        else {
-            printf("%c", plainText[i]); //if not an alphabet, upper or lower case, just print the character in the Ith position
-        }
+    //         //convert AlphaIndex to CipheredText -- Ith index letter % 26 + 97(then add the ASCII back at the end)
+    //         int newCipheredLowerText = lowerConvertToIndex % 26 + 97; //modulo + 97 to generate the newly shifted ascii values
+    //         printf("%c", newCipheredLowerText); //prints newly shifted ascii values
+    //     }
+    //     else {
+    //         printf("%c", plainText[i]); //if not an alphabet, upper or lower case, just print the character in the Ith position
+    //     }
 
-        // {
-        //     printf("lowercase\n"); //currently prints this if ith character is not uppercase
-        // }
+    //     // {
+    //     //     printf("lowercase\n"); //currently prints this if ith character is not uppercase
+    //     // }
 
-    }
-            printf("\n"); //creates new line after cipherText prints
-            return 0; //means program ran successfully
+    // }
+    //         printf("\n"); //creates new line after cipherText prints
+    //         return 0; //means program ran successfully
 
 }
 
