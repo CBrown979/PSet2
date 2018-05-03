@@ -1,26 +1,27 @@
 #include <cs50.h>
 #include <stdio.h>
 #include <stdlib.h> //contains atoi function: Its prototype is as follows: int atoi(const char *str); The str argument is a string, represented by an array of characters, containing the characters of a signed integer number.
-#include <ctype.h> //The ctype.h header file of the C Standard Library declares several functions that are useful for testing and mapping characters -- isalpha; islower, isupper
 #include <string.h> //You can get the length of a string using the strlen function. This function is declared in the header file string.h.
+#include <ctype.h> //The ctype.h header file of the C Standard Library declares several functions that are useful for testing and mapping characters -- isalpha; islower, isupper
 
 int main(int argc, string argv[]) //argc stands for "argument count"; argc contains the number of arguments passed to the program; argv stands for "argument vector". A vector is a one-dimensional array, and argv is a one-dimensional array of strings.
-// int main ( int argc, char *argv[] ) //alternative for main found on stackOverflow for c9
-
 {
     //Declare variables for shift and text
     string shiftKey; //string used to shift letters to the right in ciphertext
     string plainText; //string entered by the user
 
     //argc must equal 2 -- to run program, there can only be 2 arguments entered on command line - ./vigenere and shiftKey
-    //argv is the 2nd argument and will be alphabet characters only -- and entered as a string
-    if(argc == 2)
+    //argv is the 2nd argument and will be alphabet characters only -- entered as a string
+    if(argc == 2) //checks for 2 arguments
     {
         shiftKey = argv[1]; //argv[1] is targeting the value of the 2nd argument on the command line, after ./vigenere
+        //assigning the 2nd argument to the variable shiftKey
+        int lenShiftKey = strlen(shiftKey); //declares variable for the length of shiftKey
         // printf("%s\n",shiftKey); //confirmed key is acting like an string
 
         //confirm that shiftKey string contains all alphabet characters only
-        for(int i = 0, allAlphas = strlen(shiftKey); i < allAlphas; i++) //for all the characters in shiftKey string
+        for(int i = 0; i < lenShiftKey; i++) //run check on all the characters in shiftKey string
+        //initialze counter to 0 & assign the length of shiftKey to allAlphas variable
         {
             if(!isalpha(shiftKey[i]))//if a character in the shiftKey string is NOT an alphabet character
             {
@@ -28,7 +29,7 @@ int main(int argc, string argv[]) //argc stands for "argument count"; argc conta
                 return 1; //means error or anomaly
             }
         }
-    }
+
     if(argc != 2)//if argc does not equal 2; if there are not ONLY 2 arguments on the command line
     {
             printf("Error! There must be ONE WORD after ./vigenere\n"); //print error message
@@ -40,61 +41,61 @@ int main(int argc, string argv[]) //argc stands for "argument count"; argc conta
     // printf("%s\n", plainText);
 
     // // //Ciphered text - 2nd line: ciphertext: cipheredText
-    printf("ciphertext: \n");
+    printf("ciphertext: ");
 
-    // //For each element of plaintext - the entire length of plaintext, confirm if each element is an alphabet character; if so, add the shiftKey
-    // //ciphertext = (ith character in plaintext + shiftKey) mod 26
-    // for(int i = 0, textLength = strlen(plainText); i < textLength; i++)
-    // {
-    //     //is the indexed space an alphabet character?; if so, is it upper or lowercase? Must preserve cases
 
-    //     if(isalpha(plainText[i]) && isupper(plainText[i])) { //confirming if each character is an alphabet character && is uppercase
-    //         // printf("%c\n", plainText[i]); //then printing each alphabet character letter of plainText
-    //         //from ASCII to AlphaIndex conversion values: plainText + shiftKey - 65 (A = 65, to bring to 0 based index, subtract 65)
-    //         int upperConvertToIndex = plainText[i] + shiftKey - 65;
+    //For each element of plaintext - the entire length of plaintext, confirm if each element is an alphabet character; if so, add the shiftKey
+    //ciphertext = (ith character in plaintext + shiftKey) mod 26
+    for (int i = 0, textLength = strlen(plainText), index = 0; i < textLength; i++)
+    {
+        if (isalpha(plainText[i])) //check if plaintext[i] is an alphabet character
+        {
+            if (isupper(plainText[i])) //check if each character is uppercase; print uppercase chars
+            {
+                ////preserve upper case
+                //  if isupper(prompt[i])
+                //  {
+                //       printf("%c", (((plainText[i] + key[loop]) - 'A') % 26) + 'A');
+                //  }
+                printf("%c", ((plainText[i] - 'A') + (toupper(shiftKey[index]) - 'A')) % 26 + 'A');
 
-    //         //convert AlphaIndex to CipheredText -- (Ith index letter % 26 + 65(then add the ASCII back at the end)
-    //         int newCipheredUpperText = upperConvertToIndex % 26 + 65; //modulo + 65 to generate the newly shifted ascii values
-    //         printf("%c", newCipheredUpperText); //print the new ASCII letter (+65)
-    //     }
-    //     // if(isupper(plainText[i])){ //checking if Ith character in plainText is uppercase
-    //     //     printf("%c\n", plainText[i]);
-    //     // }
-    //     else if(isalpha(plainText[i]) && islower(plainText[i])){
-    //         //from ASCII to AlphaIndex conversion values: plainText + shiftKey - 97 (a = 97, to bring to 0 based index, subtract 97)
-    //         int lowerConvertToIndex = plainText[i] + shiftKey - 97;
+                //CAESAR Logic
+                //from ASCII to AlphaIndex conversion values: plainText + shiftKey - 65 (A = 65, to bring to 0 based index, subtract char 'A')
+                //int upperConvertToIndex = plainText[i] + shiftKey - 65;
+                //convert AlphaIndex to CipheredText -- (Ith index letter % 26 + 65(then add the ASCII back at the end)
+                //int newCipheredUpperText = upperConvertToIndex % 26 + 65; //modulo + 65 to generate the newly shifted ascii values	        }
+	        else if (islower(plainText[i])) //check if each character in plaintext is lowercase
+	        {
+	            printf("%c", ((plainText[i] - 'a') + (tolower(shiftKey[index]) - 'a')) % 26 + 'a');
+	            ////preserve lower case
+                //  else if islower(plainText[i])
+                // {
+                //      printf("%c", (((plainText[i] + key[loop]) - 'a') % 26 ) + 'a');
+                // }
 
-    //         //convert AlphaIndex to CipheredText -- Ith index letter % 26 + 97(then add the ASCII back at the end)
-    //         int newCipheredLowerText = lowerConvertToIndex % 26 + 97; //modulo + 97 to generate the newly shifted ascii values
-    //         printf("%c", newCipheredLowerText); //prints newly shifted ascii values
-    //     }
-    //     else {
-    //         printf("%c", plainText[i]); //if not an alphabet, upper or lower case, just print the character in the Ith position
-    //     }
+	            //CAESAR Logic
+	            //converts lowerChars with key shift to ascii to alpha to ascii
+	            //from ASCII to AlphaIndex conversion values: plainText + shiftKey - 97 (a = 97, to bring to 0 based index, subtract 97)
+                //int lowerConvertToIndex = plainText[i] + shiftKey - 97;
+                //convert AlphaIndex to CipheredText -- Ith index letter % 26 + 97(then add the ASCII back at the end)
+                //int newCipheredLowerText = lowerConvertToIndex % 26 + 97; //modulo + 97 to generate the newly shifted ascii values
+	        }
 
-    //     // {
-    //     //     printf("lowercase\n"); //currently prints this if ith character is not uppercase
-    //     // }
+            index = (index + 1) % lenShiftKey; //runs through length of the shiftKey characters; and loops back to the beginning - 0 indexed
 
-    // }
-    //         printf("\n"); //creates new line after cipherText prints
-    //         return 0; //means program ran successfully
+            }
 
+        else
+        {
+            printf("%c", plainText[i]); //if not an alphabet, upper or lower case, just print the character in the Ith position
+        }
+    }
+    printf("\n"); //creates new line after cipherText prints
+  }
+  else
+  {
+    printf("Usage: ./vigenere k\n");//per specs, this is the output that is displayed when no <1 or >2 arguments are present
+    exit(1); //means EXIT_FAILURE -- check50 did not want return 1 used
+  }
+  exit(0); //means EXIT_SUCCESS -- check50 did not want return 0 used
 }
-
-//Specs
-// Design and implement a program that encrypts messages using Vigenère’s cipher.
-
-// Implement your program in a file called vigenere.c in a directory called vigenere.
-
-// Your program must accept a single command-line argument: a keyword, k, composed entirely of alphabetical characters.
-
-// If your program is executed without any command-line arguments, with more than one command-line argument, or with one command-line argument that contains any non-alphabetical character, your program should print an error (of your choice) and exit immediately, with main returning 1 (thereby signifying an error).
-
-// Otherwise, your program must proceed to prompt the user for a string of plaintext, p, (as by a prompt for plaintext:) which it must then encrypt according to Vigenère’s cipher with k, ultimately printing the result (prepended with ciphertext: and ending with a newline) and exiting, with main returning 0.
-
-// With respect to the characters in k, you must treat A and a as 0, B and b as 1, … , and Z and z as 25.
-
-// Your program must only apply Vigenère’s cipher to a character in p if that character is a letter. All other characters (numbers, symbols, spaces, punctuation marks, etc.) must be outputted unchanged. Moreover, if your code is about to apply the jth character of k to the ith character of p, but the latter proves to be a non-alphabetical character, you must wait to apply that jth character of k to the next alphabetical character in p; you must not yet advance to the next character in k.
-
-// Your program must preserve the case of each letter in p.
