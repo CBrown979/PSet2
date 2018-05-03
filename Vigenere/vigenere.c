@@ -50,7 +50,7 @@ int main(int argc, string argv[]) //argc stands for "argument count"; argc conta
     {
         if (isalpha(plainText[i])) //check if plaintext[i] is an alphabet character
         {
-            if (isupper(plainText[i])) //check if each character is uppercase; print uppercase chars
+        if (isupper(plainText[i])) //check if each character is uppercase; print uppercase chars
             {
                 ////preserve upper case
                 //  if isupper(prompt[i])
@@ -64,7 +64,8 @@ int main(int argc, string argv[]) //argc stands for "argument count"; argc conta
                 //int upperConvertToIndex = plainText[i] + shiftKey - 65;
                 //convert AlphaIndex to CipheredText -- (Ith index letter % 26 + 65(then add the ASCII back at the end)
                 //int newCipheredUpperText = upperConvertToIndex % 26 + 65; //modulo + 65 to generate the newly shifted ascii values	        }
-	        else if (islower(plainText[i])) //check if each character in plaintext is lowercase
+            }
+	  else if (islower(plainText[i])) //check if each character in plaintext is lowercase
 	        {
 	            printf("%c", ((plainText[i] - 'a') + (tolower(shiftKey[index]) - 'a')) % 26 + 'a');
 	            ////preserve lower case
@@ -85,17 +86,17 @@ int main(int argc, string argv[]) //argc stands for "argument count"; argc conta
 
             }
 
-        else
-        {
-            printf("%c", plainText[i]); //if not an alphabet, upper or lower case, just print the character in the Ith position
+            else
+            {
+                printf("%c", plainText[i]); //if not an alphabet, upper or lower case, just print the character in the Ith position
+            }
         }
-    }
-    printf("\n"); //creates new line after cipherText prints
-  }
-  else
-  {
-    printf("Usage: ./vigenere k\n");//per specs, this is the output that is displayed when no <1 or >2 arguments are present
-    exit(1); //means EXIT_FAILURE -- check50 did not want return 1 used
-  }
-  exit(0); //means EXIT_SUCCESS -- check50 did not want return 0 used
+        printf("\n"); //creates new line after cipherText prints
+      }
+      else
+      {
+        printf("Usage: ./vigenere k\n");//per specs, this is the output that is displayed when no <1 or >2 arguments are present
+        exit(1); //means EXIT_FAILURE -- check50 did not want return 1 used
+      }
+      exit(0); //means EXIT_SUCCESS -- check50 did not want return 0 used
 }
